@@ -33,11 +33,6 @@
 #include <boost/limits.hpp>
 #include <boost/integer_traits.hpp>
 
-#if defined(BOOST_MSVC)
-# pragma warning(push)
-# pragma warning(disable: 4127) // conditional expression is constant
-#endif
-
 #if !defined(SPIRIT_NUMERICS_LOOP_UNROLL)
 # define SPIRIT_NUMERICS_LOOP_UNROLL 3
 #endif
@@ -305,10 +300,6 @@ namespace boost { namespace spirit { namespace qi { namespace detail
     >
     struct extract_int
     {
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
-# pragma warning(push)
-# pragma warning(disable: 4127)   // conditional expression is constant
-#endif
         template <typename Iterator, typename Attribute>
         inline static bool
         parse_main(
@@ -342,7 +333,7 @@ namespace boost { namespace spirit { namespace qi { namespace detail
             std::size_t count = 0;
             char_type ch;
 
-            while (true)
+            for (;;)
             {
                 BOOST_PP_REPEAT(
                     SPIRIT_NUMERICS_LOOP_UNROLL
@@ -357,9 +348,6 @@ namespace boost { namespace spirit { namespace qi { namespace detail
             }
             return false;
         }
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
-# pragma warning(pop)
-#endif
 
         template <typename Iterator>
         inline static bool
@@ -410,10 +398,6 @@ namespace boost { namespace spirit { namespace qi { namespace detail
     template <typename T, unsigned Radix, typename Accumulator, bool Accumulate>
     struct extract_int<T, Radix, 1, -1, Accumulator, Accumulate>
     {
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
-# pragma warning(push)
-# pragma warning(disable: 4127)   // conditional expression is constant
-#endif
         template <typename Iterator, typename Attribute>
         inline static bool
         parse_main(
@@ -466,7 +450,7 @@ namespace boost { namespace spirit { namespace qi { namespace detail
 
             // count = 0; $$$ verify: I think this is wrong $$$
             ++it;
-            while (true)
+            for (;;)
             {
                 BOOST_PP_REPEAT(
                     SPIRIT_NUMERICS_LOOP_UNROLL
@@ -477,9 +461,6 @@ namespace boost { namespace spirit { namespace qi { namespace detail
             first = it;
             return true;
         }
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
-# pragma warning(pop)
-#endif
 
         template <typename Iterator>
         inline static bool
@@ -505,9 +486,5 @@ namespace boost { namespace spirit { namespace qi { namespace detail
 
 #undef SPIRIT_NUMERIC_INNER_LOOP
 }}}}
-
-#if defined(BOOST_MSVC)
-# pragma warning(pop)
-#endif
 
 #endif
